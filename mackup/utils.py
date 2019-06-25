@@ -303,9 +303,14 @@ def get_icloud_folder_location():
     Returns:
         (str) Full path to the iCloud Drive folder.
     """
+    macOS_version = platform.mac_ver()[0]
     yosemite_icloud_path = '~/Library/Mobile Documents/com~apple~CloudDocs/'
+    catalina_icloud_path = '~/Library/CloudStorage/iCloud Drive/'
 
-    icloud_home = os.path.expanduser(yosemite_icloud_path)
+    if macOS_version < '10.15':
+        icloud_home = os.path.expanduser(yosemite_icloud_path)
+    elif macOS_version >= '10.15':
+        icloud_home = os.path.expanduser(catalina_icloud_path)
 
     if not os.path.isdir(icloud_home):
         error('Unable to find your iCloud Drive =(')
